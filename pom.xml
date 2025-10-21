@@ -368,7 +368,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
@@ -416,7 +416,7 @@
                     <publishingServerId>ossrh</publishingServerId>
                     <autoPublish>${auto-release-after-close}</autoPublish>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <!-- 发包相关插件-end -->
         </plugins>
     </build>
