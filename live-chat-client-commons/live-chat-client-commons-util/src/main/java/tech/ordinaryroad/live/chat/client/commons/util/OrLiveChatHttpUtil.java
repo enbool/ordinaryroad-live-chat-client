@@ -31,7 +31,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.Authenticator;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.List;
@@ -105,9 +107,26 @@ public class OrLiveChatHttpUtil extends HttpUtil {
             String username = PROXY_PROPERTIES.getUsername();
             if (StrUtil.isNotBlank(username)) {
                 request.basicProxyAuth(username, PROXY_PROPERTIES.getPassword());
+                Authenticator.setDefault(new ProxyAuthenticator(username, PROXY_PROPERTIES.getPassword()));
             }
         }
         return request;
+    }
+
+    // 代理认证器内部类
+    static class ProxyAuthenticator extends Authenticator {
+        private final String username;
+        private final String password;
+
+        public ProxyAuthenticator(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(username, password.toCharArray());
+        }
     }
 
     @Data

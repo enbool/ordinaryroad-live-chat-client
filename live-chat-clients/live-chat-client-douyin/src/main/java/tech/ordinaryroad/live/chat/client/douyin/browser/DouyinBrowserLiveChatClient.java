@@ -146,7 +146,7 @@ public class DouyinBrowserLiveChatClient extends BaseBrowserClient<DouyinBrowser
         });
 
         // 弹幕WebSocket请求ID
-        AtomicReference<String> imRequestId = new AtomicReference<>("");
+        /*AtomicReference<String> imRequestId = new AtomicReference<>("");
         cdpSession.on(ConnectionEvents.Network_webSocketCreated, (e) -> {
             JsonNode event = (JsonNode) e;
             String url = event.get("url").asText();
@@ -168,7 +168,7 @@ public class DouyinBrowserLiveChatClient extends BaseBrowserClient<DouyinBrowser
                     log.error("解析弹幕失败", exception);
                 }
             }
-        });
+        });*/
 
         GoToOptions goToOptions = new GoToOptions();
         goToOptions.setTimeout((int) TimeUnit.MINUTES.toMillis(3));

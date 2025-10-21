@@ -87,7 +87,7 @@
         <commons-text.version>1.13.0</commons-text.version>
         <byte-buddy.version>1.16.1</byte-buddy.version>
         <graalvm.version>24.1.0</graalvm.version>
-        <jvppeteer.version>3.3.9.c</jvppeteer.version>
+        <jvppeteer.version>3.4.1</jvppeteer.version>
     </properties>
 
     <dependencyManagement>
