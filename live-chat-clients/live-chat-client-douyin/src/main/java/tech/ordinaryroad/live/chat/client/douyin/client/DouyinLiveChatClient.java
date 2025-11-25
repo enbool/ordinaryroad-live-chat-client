@@ -117,7 +117,17 @@ public class DouyinLiveChatClient extends BaseNettyClient<DouyinLiveChatClientCo
     public DouyinConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyinConnectionHandler> clientConnectionListener) {
         return new DouyinConnectionHandler(() -> {
             DefaultHttpHeaders headers = new DefaultHttpHeaders();
+            // 添加ttwid Cookie
             headers.add(Header.COOKIE.name(), DouyinApis.KEY_COOKIE_TTWID + "=" + roomInitResult.getTtwid());
+            // 添加额外的Cookie（如果配置了）
+            if (StrUtil.isNotBlank(getConfig().getCookie())) {
+                String existingCookie = headers.get(Header.COOKIE.name());
+                if (StrUtil.isNotBlank(existingCookie)) {
+                    headers.set(Header.COOKIE.name(), existingCookie + "; " + getConfig().getCookie());
+                } else {
+                    headers.add(Header.COOKIE.name(), getConfig().getCookie());
+                }
+            }
             headers.add(Header.USER_AGENT.name(), getConfig().getUserAgent());
             return new WebSocketClientProtocolHandler(
                     WebSocketClientProtocolConfig.newBuilder()

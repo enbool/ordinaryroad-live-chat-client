@@ -109,6 +109,11 @@ public class HuyaLiveChatClient extends BaseNettyClient<
 
     @Override
     public HuyaConnectionHandler initConnectionHandler(IBaseConnectionListener<HuyaConnectionHandler> clientConnectionListener) {
+        DefaultHttpHeaders customHeaders = new DefaultHttpHeaders();
+        // 添加Cookie到请求头
+        if (cn.hutool.core.util.StrUtil.isNotBlank(getConfig().getCookie())) {
+            customHeaders.add("Cookie", getConfig().getCookie());
+        }
         return new HuyaConnectionHandler(
                 () -> new WebSocketClientProtocolHandler(
                         WebSocketClientProtocolConfig.newBuilder()
@@ -116,7 +121,7 @@ public class HuyaLiveChatClient extends BaseNettyClient<
                                 .version(WebSocketVersion.V13)
                                 .subprotocol(null)
                                 .allowExtensions(true)
-                                .customHeaders(new DefaultHttpHeaders())
+                                .customHeaders(customHeaders)
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
                                 .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()

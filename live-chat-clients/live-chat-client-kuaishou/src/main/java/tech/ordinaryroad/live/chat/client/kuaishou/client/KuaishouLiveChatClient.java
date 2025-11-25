@@ -114,6 +114,11 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
 
     @Override
     public KuaishouConnectionHandler initConnectionHandler(IBaseConnectionListener<KuaishouConnectionHandler> clientConnectionListener) {
+        DefaultHttpHeaders customHeaders = new DefaultHttpHeaders();
+        // 添加Cookie到请求头
+        if (StrUtil.isNotBlank(getConfig().getCookie())) {
+            customHeaders.add("Cookie", getConfig().getCookie());
+        }
         return new KuaishouConnectionHandler(
                 () -> new WebSocketClientProtocolHandler(
                         WebSocketClientProtocolConfig.newBuilder()
@@ -121,7 +126,7 @@ public class KuaishouLiveChatClient extends BaseNettyClient<
                                 .version(WebSocketVersion.V13)
                                 .subprotocol(null)
                                 .allowExtensions(true)
-                                .customHeaders(new DefaultHttpHeaders())
+                                .customHeaders(customHeaders)
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
                                 .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()

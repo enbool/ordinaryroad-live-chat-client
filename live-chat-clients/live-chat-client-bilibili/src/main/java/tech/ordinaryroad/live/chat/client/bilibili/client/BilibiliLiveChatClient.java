@@ -125,6 +125,10 @@ public class BilibiliLiveChatClient extends BaseNettyClient<
             headers.add(Header.ORIGIN.name(), "https://live.bilibili.com");
             headers.add(Header.PRAGMA.name(), "no-cache");
             headers.set(Header.HOST.name(), getWebsocketUri().getHost() + ":" + getWebsocketUri().getPort());
+            // 添加Cookie到请求头
+            if (StrUtil.isNotBlank(getConfig().getCookie())) {
+                headers.add("Cookie", getConfig().getCookie());
+            }
             return new WebSocketClientProtocolHandler(
                     WebSocketClientProtocolConfig.newBuilder()
                             .webSocketUri(getWebsocketUri())

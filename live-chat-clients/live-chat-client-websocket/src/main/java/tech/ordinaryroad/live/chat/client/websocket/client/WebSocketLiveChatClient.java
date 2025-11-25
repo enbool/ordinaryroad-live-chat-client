@@ -99,6 +99,11 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
 
     @Override
     public WebSocketConnectionHandler initConnectionHandler(IBaseConnectionListener<WebSocketConnectionHandler> clientConnectionListener) {
+        DefaultHttpHeaders customHeaders = new DefaultHttpHeaders();
+        // 添加Cookie到请求头
+        if (StrUtil.isNotBlank(getConfig().getCookie())) {
+            customHeaders.add("Cookie", getConfig().getCookie());
+        }
         return new WebSocketConnectionHandler(
                 () -> new WebSocketClientProtocolHandler(
                         WebSocketClientProtocolConfig.newBuilder()
@@ -106,7 +111,7 @@ public class WebSocketLiveChatClient extends BaseNettyClient<
                                 .version(WebSocketVersion.V13)
                                 .subprotocol(null)
                                 .allowExtensions(true)
-                                .customHeaders(new DefaultHttpHeaders())
+                                .customHeaders(customHeaders)
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
                                 .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()

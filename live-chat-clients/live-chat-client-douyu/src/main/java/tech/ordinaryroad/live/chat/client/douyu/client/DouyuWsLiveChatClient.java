@@ -86,6 +86,11 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
 
     @Override
     public DouyuConnectionHandler initConnectionHandler(IBaseConnectionListener<DouyuConnectionHandler> clientConnectionListener) {
+        DefaultHttpHeaders customHeaders = new DefaultHttpHeaders();
+        // 添加Cookie到请求头
+        if (cn.hutool.core.util.StrUtil.isNotBlank(getConfig().getCookie())) {
+            customHeaders.add("Cookie", getConfig().getCookie());
+        }
         return new DouyuConnectionHandler(DouyuClientModeEnum.WS,
                 () -> new WebSocketClientProtocolHandler(
                         WebSocketClientProtocolConfig.newBuilder()
@@ -93,7 +98,7 @@ public class DouyuWsLiveChatClient extends BaseDouyuLiveChatClient implements ID
                                 .version(WebSocketVersion.V13)
                                 .subprotocol(null)
                                 .allowExtensions(true)
-                                .customHeaders(new DefaultHttpHeaders())
+                                .customHeaders(customHeaders)
                                 .maxFramePayloadLength(getConfig().getMaxFramePayloadLength())
                                 .handshakeTimeoutMillis(getConfig().getHandshakeTimeoutMillis())
                                 .build()
